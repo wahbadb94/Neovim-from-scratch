@@ -38,6 +38,20 @@ packer.init({
 	},
 })
 
+local setupPlugins = function()
+  -- Setup shade
+  local status, shade = pcall(require, "shade")
+
+  if not status then
+    return
+  end
+
+  shade.setup({
+    overlay_opacity = 50,
+    opacity_step = 1,
+  })
+end
+
 -- Install your plugins here
 return packer.startup(function(use)
  -- My plugins here
@@ -45,10 +59,15 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
 
+  use "sunjon/shade.nvim" -- dims all inactive windows
+  use "ap/vim-css-color"
+  setupPlugins() -- plugins that require confi
+
   -- Colorschemes
   -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
   use 'Mofiqul/dracula.nvim'
-  
+  use 'folke/tokyonight.nvim'
+
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin
   use "hrsh7th/cmp-buffer" -- buffer completions
@@ -63,9 +82,9 @@ return packer.startup(function(use)
   use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
 
 	-- LSP
-  use "neovim/nvim-lspconfig" -- enable LSP
   use "williamboman/mason.nvim" -- simple to use language server installer
   use "williamboman/mason-lspconfig.nvim" -- simple to use language server installer
+  use "neovim/nvim-lspconfig" -- enable LSP
   use 'jose-elias-alvarez/null-ls.nvim' -- LSP diagnostics and code actions
 
 	-- Automatically set up your configuration after cloning packer.nvim
